@@ -31,11 +31,6 @@ export const routes:Routes = [
                 loadChildren: 'app/pages/components/components.module#ComponentsModule',
                 canLoad: [AuthGuard]
             },
-            {path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule', canLoad: [AuthGuard]},
-            {path: 'ui', loadChildren: 'app/pages/ui/ui.module#UiModule', canLoad: [AuthGuard]},
-            {path: 'forms', loadChildren: 'app/pages/forms/forms.module#FormsModule', canLoad: [AuthGuard]},
-            {path: 'tables', loadChildren: 'app/pages/tables/tables.module#TablesModule', canLoad: [AuthGuard]},
-            {path: 'maps', loadChildren: 'app/pages/maps/maps.module#MapsModule', canLoad: [AuthGuard]},
             {path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canLoad: [AuthGuard]},
             {path: 'sys', loadChildren: 'app/pages/menu/menu.module#MenuModule', canLoad: [AuthGuard]}
 
