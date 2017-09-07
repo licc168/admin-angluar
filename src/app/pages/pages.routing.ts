@@ -25,12 +25,7 @@ export const routes:Routes = [
                 loadChildren: 'app/pages/dashboard/dashboard.module#DashboardModule',
                 canLoad: [AuthGuard]
             },
-            {path: 'editors', loadChildren: 'app/pages/editors/editors.module#EditorsModule', canLoad: [AuthGuard]},
-            {
-                path: 'components',
-                loadChildren: 'app/pages/components/components.module#ComponentsModule',
-                canLoad: [AuthGuard]
-            },
+
             {path: 'user', loadChildren: 'app/pages/user/user.module#UserModule', canLoad: [AuthGuard]},
             {path: 'sys', loadChildren: 'app/pages/menu/menu.module#MenuModule', canLoad: [AuthGuard]}
 
