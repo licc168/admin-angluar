@@ -16,8 +16,8 @@ const address = require('./address.config')
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
-const HOST = process.env.HOST || 'localhost';
-const PORT = Number(process.env.PORT) || 8081;
+const HOST = process.env.HOST || '47.94.196.111';
+const PORT = Number(process.env.PORT) || 3000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
