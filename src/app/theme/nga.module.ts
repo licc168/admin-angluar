@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgUploaderModule } from 'ngx-uploader';
 import { AppTranslationModule } from '../app.translation.module';
 
 import {
@@ -14,24 +13,18 @@ import {
 } from './theme.configProvider';
 
 import {
-  BaAmChart,
+
   BaBackTop,
-  BaCard,
-  BaChartistChart,
-  BaCheckbox,
+
   BaContentTop,
-  BaFullCalendar,
   BaMenuItem,
   BaMenu,
-  BaMsgCenter,
-  BaMultiCheckbox,
   BaPageTop,
-  BaPictureUploader,
-  BaSidebar,
-  BaFileUploader
+
+  BaSidebar
+
 } from './components';
 
-import { BaCardBlur } from './components/baCard/baCardBlur.directive';
 
 import {
   BaScrollPosition,
@@ -58,28 +51,23 @@ import {
 } from './validators';
 
 const NGA_COMPONENTS = [
-  BaAmChart,
+
   BaBackTop,
-  BaCard,
-  BaChartistChart,
-  BaCheckbox,
+
   BaContentTop,
-  BaFullCalendar,
+
   BaMenuItem,
   BaMenu,
-  BaMsgCenter,
-  BaMultiCheckbox,
+
   BaPageTop,
-  BaPictureUploader,
-  BaSidebar,
-  BaFileUploader
+  BaSidebar
+
 ];
 
 const NGA_DIRECTIVES = [
   BaScrollPosition,
   BaSlimScroll,
   BaThemeRun,
-  BaCardBlur
 ];
 
 const NGA_PIPES = [
@@ -112,7 +100,6 @@ const NGA_VALIDATORS = [
     FormsModule,
     ReactiveFormsModule,
     AppTranslationModule,
-    NgUploaderModule
   ],
   exports: [
     ...NGA_PIPES,

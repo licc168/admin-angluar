@@ -1,0 +1,93 @@
+<form #f nz-form [formGroup]="validateForm" (ngSubmit)="onSubmit(validateForm.value)">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="7">
+      <label nz-form-item-required>上级目录</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="12">
+      <nz-select formControlName="parentId" [nzSize]="'large'"  [(ngModel)]="parentId">
+        <nz-option   *ngFor="let item of menus" [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="7">
+      <label nz-form-item-required>菜单名称</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control [nzValidateStatus]="getFormControl('title')" nzHasFeedback>
+      <nz-input formControlName="title"  [(ngModel)]="title"
+                [nzType]="'text'"
+                [nzPlaceHolder]="'菜单名称'"
+                [nzSize]="'large'">
+      </nz-input>
+      <div nz-form-explain
+           *ngIf="getFormControl('title').dirty&&getFormControl('title').hasError('required')">
+        请输入菜单名
+      </div>
+
+      <div nz-form-explain *ngIf="getFormControl('title').dirty&&getFormControl('title').pending">
+        Validating...
+      </div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="7">
+      <label nz-form-item>菜单图标</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control [nzValidateStatus]="getFormControl('icon')" nzHasFeedback>
+      <nz-input formControlName="icon" [(ngModel)]="icon"
+                [nzType]="'text'"
+                [nzPlaceHolder]="'菜单图标'"
+                [nzSize]="'large'">
+      </nz-input>
+
+
+    </div>
+  </div>
+
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="7">
+      <label nz-form-item>路径</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control [nzValidateStatus]="getFormControl('icon')" nzHasFeedback>
+      <nz-input formControlName="path"  [(ngModel)]="path"
+                [nzType]="'text'"
+                [nzPlaceHolder]="'路径'"
+                [nzSize]="'large'">
+      </nz-input>
+
+
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="7">
+      <label nz-form-item>排序</label>
+    </div>
+    <div nz-col [nzSpan]="12" nz-form-control [nzValidateStatus]="getFormControl('orderNum')" nzHasFeedback>
+      <nz-input-number  formControlName="orderNum"  [nzMin]="1" [nzMax]="10" [nzStep]="0" [(ngModel)]="orderNum"
+                [nzPlaceHolder]="'排序'"
+                [nzSize]="'large'">
+      </nz-input-number>
+
+
+    </div>
+  </div>
+
+
+
+  <div nz-form-item nz-row>
+    <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
+      <button nz-button
+              [nzType]="'primary'"
+              [nzSize]="'large'"
+              [disabled]="!validateForm.valid">
+        保存
+      </button>
+      <button nz-button
+              [nzSize]="'large'"
+              (click)="resetForm($event)">重置
+      </button>
+    </div>
+  </div>
+  <input type="hidden" name="id" [ngModel]="id"  formControlName="id">
+
+</form>

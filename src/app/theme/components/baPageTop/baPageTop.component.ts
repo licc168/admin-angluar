@@ -3,14 +3,10 @@ import {Component} from '@angular/core';
 import {GlobalState} from '../../../global.state';
 import {AuthenticationService} from "../../../services/authentication.service";
 
-import 'style-loader!./baPageTop.scss';
-
 @Component({
   selector: 'ba-page-top',
   templateUrl: './baPageTop.html',
-  providers: [
-    AuthenticationService
-  ]
+  styleUrls: ['./baPageTop.scss']
 })
 export class BaPageTop {
 

@@ -1,41 +1,46 @@
 <div class="auth-main">
   <div class="auth-block">
-    <h1>NG2-后台管理系统</h1>
-    <a routerLink="/register" class="auth-link">注册账号</a>
-    <div *ngFor="let alert of alerts">
-      <alert [type]="alert.type" ><span [innerHtml]="alert.msg"></span></alert>
+    <h1 translate></h1>
+   <div style="width: 400px;margin-bottom: 10px">
+     <nz-alert [nzType]="'error'" *ngIf="nzShow" >
+      <span alert-body>
+        <pre>{{nzMessage}}</pre>
+      </span>
+     </nz-alert>
+
+   </div>
+
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="onSubmit(validateForm.value)">
+  <div nz-form-item>
+    <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
+      <nz-input formControlName="userName" [nzPlaceHolder]="'用户名'" [nzSize]="'large'">
+        <ng-template #prefix>
+          <i class="anticon anticon-user"></i>
+        </ng-template>
+      </nz-input>
+      <div nz-form-explain *ngIf="validateForm.controls.userName.dirty&&validateForm.controls.userName.hasError('required')">请输入用户名</div>
     </div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
-      <div class="form-group row" [ngClass]="{'has-error': (!userName.valid && userName.touched), 'has-success': (userName.valid && userName.touched)}">
-        <label for="inputUserName3" class="col-sm-2 control-label">用户名</label>
-
-        <div class="col-sm-10">
-          <input [formControl]="userName" type="text" class="form-control" id="inputUserName3" placeholder="用户名">
-        </div>
-      </div>
-      <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
-        <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
-
-        <div class="col-sm-10">
-          <input [formControl]="password" type="password" class="form-control" id="inputPassword3" placeholder="密码">
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="offset-sm-2 col-sm-10">
-          <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth">登录</button>
-          <a routerLink="/login" class="forgot-pass">忘记密码?</a>
-        </div>
-      </div>
-    </form>
-
-    <!--<div class="auth-sep"><span><span>or Sign in with one click</span></span></div>
-
-    <div class="al-share-auth">
-      <ul class="al-share clearfix">
-        <li><i class="socicon socicon-facebook" title="Share on Facebook"></i></li>
-        <li><i class="socicon socicon-twitter" title="Share on Twitter"></i></li>
-        <li><i class="socicon socicon-google" title="Share on Google Plus"></i></li>
-      </ul>
+  </div>
+  <div nz-form-item>
+    <div nz-form-control [nzValidateStatus]="validateForm.controls.password">
+      <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'密码'" [nzSize]="'large'">
+        <ng-template #prefix>
+          <i class="anticon anticon-lock"></i>
+        </ng-template>
+      </nz-input>
+      <div nz-form-explain *ngIf="validateForm.controls.password.dirty&&validateForm.controls.password.hasError('required')">请输入密码</div>
     </div>
-  </div>-->
+  </div>
+  <div nz-form-item>
+    <div nz-form-control>
+      <label nz-checkbox formControlName="remember">
+        <span>记住密码</span>
+      </label>
+      <a class="login-form-forgot" class="login-form-forgot">忘记密码</a>
+      <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">登录</button>
+      <a routerLink="/register">现在注册</a>
+    </div>
+  </div>
+</form>
+  </div>
 </div>

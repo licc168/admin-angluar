@@ -1,38 +1,60 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../../services/authentication.service";
-import {CONSTANTS} from './../../app.const.ts'
+
 
 
 
 import 'style-loader!./login.scss';
+import {CONSTANTS} from "../../app.const";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'login',
   templateUrl: './login.html',
+  styles: [ `
+    .login-form {
+      max-width: 400px;
+      
+    }
+  
+    .login-form-forgot {
+      float: right;
+    }
+
+    .login-form-button {
+      width: 100%;
+    }
+  `
+  ]
 })
 export class Login implements OnInit {
 
-  public form:FormGroup;
-  public userName:AbstractControl;
-  public password:AbstractControl;
-  public submitted:boolean = false;
-  public returnUrl:string;
-  public errorMessage:string;
-  public alerts:any = [];
+  validateForm:FormGroup;
+   userName:AbstractControl;
+   password:AbstractControl;
+   remember:AbstractControl;
+   submitted:boolean = false;
+   returnUrl:string;
+   nzMessage:string;
+   nzType:String = "error";
+   nzShow:boolean = false;
+   alerts:any = [];
 
-  constructor(fb:FormBuilder,
-              private route:ActivatedRoute,
-              private router:Router,
-              private authenticationService:AuthenticationService) {
-    this.form = fb.group({
+  constructor(fb: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router,
+              private authenticationService: AuthenticationService) {
+    this.validateForm = fb.group({
       'userName': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
+      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+      'remember': [ true ]
     });
 
-    this.userName = this.form.controls['userName'];
-    this.password = this.form.controls['password'];
+    this.userName = this.validateForm.controls['userName'];
+    this.password = this.validateForm.controls['password'];
+    this.remember = this.validateForm.controls['remember'];
+
   }
 
   ngOnInit() {
@@ -44,7 +66,7 @@ export class Login implements OnInit {
 
   public onSubmit(values:Object):void {
     this.submitted = true;
-    if (this.form.valid) {
+    if (this.validateForm.valid) {
       this.login();
     }
   }
@@ -59,36 +81,39 @@ export class Login implements OnInit {
       },
         error => {
 
-        let status = error.status;
+        const status = error.status;
         switch (status) {
           case  CONSTANTS.HTTPStatus.UNAUTHORIZED:
-            let message = JSON.parse(error._body).message.replace("Authentication Failed:", "").trim();
+            const message = JSON.parse(error._body).message.replace("Authentication Failed:", "").trim();
             switch (message) {
               case "Bad credentials":
-                this.errorMessage = "用户名或密码错误";
+                this.nzMessage = "用户名或密码错误";
                 break
               default:
-                this.errorMessage = message;
+                this.nzMessage = message;
+                this.nzShow =true;
             }
             break;
           case  CONSTANTS.HTTPStatus.INTERNAL_SERVER_ERROR:
-            this.errorMessage = "系统异常";
+            this.nzMessage = "系统异常";
+            this.nzShow =true;
+
             break;
           case CONSTANTS.HTTPStatus.GATEWAY_TIMEOUT:
-            this.errorMessage = "服务器连接超时";
+            this.nzMessage = "服务器连接超时";
+            this.nzShow =true;
+
             break;
           case CONSTANTS.HTTPStatus.FORBIDDEN:
-            this.errorMessage = "没有权限禁止访问";
+            this.nzMessage = "没有权限禁止访问";
+            this.nzShow =true;
             break;
           default:
-            this.errorMessage = error._body;
+            this.nzMessage = error._body;
+            this.nzShow =true;
+
         }
-        this.alerts = [];
-        this.alerts.push({
-          type: 'danger',
-          msg: this.errorMessage,
-          timeout: 5000
-        });
+
 
       });
   }

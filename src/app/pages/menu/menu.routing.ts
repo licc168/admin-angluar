@@ -1,12 +1,13 @@
 import { Routes, RouterModule }  from '@angular/router';
+import {MenuComponent} from "./menu.component";
 
-import { MenuComponent } from './menu.component.ts';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
-    path: 'menu',
-    component: MenuComponent
+    path: '',
+    component: MenuComponent,
+
   }
 ];
 

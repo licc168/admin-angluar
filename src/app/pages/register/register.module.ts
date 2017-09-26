@@ -6,6 +6,7 @@ import { NgaModule } from '../../theme/nga.module';
 import { Register } from './register.component';
 import { routing }       from './register.routing';
 import {UserService} from "../../services/user.service";
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import {UserService} from "../../services/user.service";
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
+    NgZorroAntdModule,
     routing
   ],
   providers: [

@@ -2,13 +2,12 @@ import {NgModule, Component}      from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgaModule} from '../../theme/nga.module';
-import {routing}       from './user.routing.ts';
-import {UserComponent} from './user.component.ts';
-import {UserListComponent} from './list/userList.component.ts';
+
+
+import {routing} from "./user.routing";
+import {UserComponent} from "./user.component";
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 import {UserService} from "../../services/user.service";
-import {NgbDropdownModule, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {PagerModule} from "../pager/pager.module";
 
 @NgModule({
 
@@ -16,21 +15,18 @@ import {PagerModule} from "../pager/pager.module";
     CommonModule,
     FormsModule,
     NgaModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    PagerModule,
+    NgZorroAntdModule,
 
     routing
   ],
   declarations: [
-    UserComponent,
-    UserListComponent
+    UserComponent
+
   ],
   entryComponents: [
   ],
   providers: [
-    UserService,
-    NgbActiveModal,
+    UserService
 
   ]
 })

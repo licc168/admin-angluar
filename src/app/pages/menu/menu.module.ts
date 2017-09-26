@@ -1,17 +1,14 @@
 import {NgModule, Component}      from '@angular/core';
 import {CommonModule} from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgaModule} from '../../theme/nga.module';
-import {routing}       from './menu.routing.ts';
-import {MenuComponent} from './menu.component.ts';
-import {MenuListComponent} from './components/list/menuList.component.ts';
-import {MenuService} from "../../services/menu.service";
-import {NgbDropdownModule, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {PagerModule} from "../pager/pager.module";
-import {MsgTipModule} from "../common/msg-tip/msg-tip.module";
-import {MenuSaveComponent} from "./components/save/menuSave.component";
 
+
+import {routing} from "./menu.routing";
+import {MenuComponent} from "./menu.component";
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+import {MenuService} from "../../services/menu.service";
+import {MenuEditComponent} from "./children/menu-edit/menu-edit.component";
 
 @NgModule({
 
@@ -20,22 +17,20 @@ import {MenuSaveComponent} from "./components/save/menuSave.component";
     FormsModule,
     ReactiveFormsModule,
     NgaModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    PagerModule,
-    MsgTipModule,
+    NgZorroAntdModule,
+
     routing
   ],
   declarations: [
     MenuComponent,
-    MenuListComponent,
-    MenuSaveComponent
+    MenuEditComponent
   ],
-
-  entryComponents: [MenuSaveComponent],
+  entryComponents: [
+    MenuEditComponent
+  ],
   providers: [
-    MenuService,
-    NgbActiveModal
+    MenuService
+
   ]
 })
 export class MenuModule {

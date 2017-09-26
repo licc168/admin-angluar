@@ -1,1 +1,1 @@
-export * from './menu.component.ts';
+export * from './menu.component';

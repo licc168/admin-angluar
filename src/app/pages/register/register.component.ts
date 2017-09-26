@@ -1,61 +1,79 @@
-import {Component} from '@angular/core';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, AbstractControl, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
-import {UserService} from "../../services/user.service";
-import {User} from "../../models/user";
-import {CONSTANTS} from './../../app.const.ts'
 
 import 'style-loader!./register.scss';
-import {Files} from "awesome-typescript-loader/dist/checker/protocol";
+import {CONSTANTS} from "../../app.const";
+import {User} from "../../models/user";
+import {UserService} from "../../services/user.service";
+import {NzMessageService} from "ng-zorro-antd";
 
 
 @Component({
   selector: 'register',
   templateUrl: './register.html',
 })
-export class Register {
+export class Register implements OnInit  {
 
-  public form:FormGroup;
-  public userName:AbstractControl;
-  public email:AbstractControl;
-  public password:AbstractControl;
-  public repeatPassword:AbstractControl;
-  public passwords:FormGroup;
-  public user:User;
-  public submitted:boolean = false;
+  validateForm: FormGroup;
 
-  constructor(fb:FormBuilder,private userService:UserService) {
-
-    this.form = fb.group({
-      'userName': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
-      'passwords': fb.group({
-        'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-        'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-      }, {validator: EqualPasswordsValidator.validate('password', 'repeatPassword')})
-    });
-
-    this.userName = this.form.controls['userName'];
-    this.email = this.form.controls['email'];
-    this.passwords = <FormGroup> this.form.controls['passwords'];
-    this.password = this.passwords.controls['password'];
-    this.repeatPassword = this.passwords.controls['repeatPassword'];
+  _submitForm() {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[ i ].markAsDirty();
+    }
   }
 
+  constructor(private fb: FormBuilder,private userService:UserService,private _message: NzMessageService) {
+  }
+
+  updateConfirmValidator() {
+
+    setTimeout(_ => {
+      this.validateForm.controls[ 'checkPassword' ].updateValueAndValidity();
+    });
+  }
+
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.validateForm.controls[ 'password' ].value) {
+      return { confirm: true, error: true };
+    }
+  };
+
+  getCaptcha(e: MouseEvent) {
+    e.preventDefault();
+  }
+
+  ngOnInit() {
+    this.validateForm = this.fb.group({
+      email            : [ null, [ Validators.email ] ],
+      password         : [ null, [ Validators.required ] ],
+      checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
+      userName         : [ null, [ Validators.required ] ]
+    });
+  }
+
+  getFormControl(name) {
+    return this.validateForm.controls[ name ];
+  }
   public onSubmit(values:User):void {
+
     let user = new User();
-    user.password = values.passwords.password;
+    user.password = values.password;
     user.userName = values.userName;
     user.email = values.email;
-    if (this.form.valid) {
-     this.userService.register(user).subscribe(
-       (data) => {
-         if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
-         }
-       },
-         error => {
+    if (this.validateForm.valid) {
+      this.userService.register(user).subscribe(
+        (data) => {
+          if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
+            this._message.create("success","注册成功");
+          }
+        },
+        error => {
+          this._message.create("error","系统异常");
 
-       });
+        });
     }
   }
 }
