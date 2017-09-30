@@ -105,7 +105,7 @@ export class Login implements OnInit {
 
             break;
           case CONSTANTS.HTTPStatus.FORBIDDEN:
-            this.nzMessage = "没有权限禁止访问";
+            this.nzMessage = "用户名或密码错误";
             this.nzShow =true;
             break;
           default:

@@ -7,6 +7,8 @@ import {CONSTANTS} from "../../app.const";
 import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
 import {NzMessageService} from "ng-zorro-antd";
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -23,7 +25,7 @@ export class Register implements OnInit  {
     }
   }
 
-  constructor(private fb: FormBuilder,private userService:UserService,private _message: NzMessageService) {
+  constructor(private router: Router,private fb: FormBuilder,private userService:UserService,private _message: NzMessageService) {
   }
 
   updateConfirmValidator() {
@@ -50,11 +52,27 @@ export class Register implements OnInit  {
       email            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      userName         : [ null, [ Validators.required ] ]
+      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$"),this.userNameAsyncValidator]]
     });
   }
+  userNameAsyncValidator = (control: FormControl): any => {
+    return Observable.create(function (observer) {
+      setTimeout(() => {
+
+        if (control.value === 'admin111') {
+          observer.next({ error: true, duplicated: true });
+        } else {
+
+
+          observer.next(null);
+        }
+        observer.complete();
+      }, 10);
+    });
+  };
 
   getFormControl(name) {
+
     return this.validateForm.controls[ name ];
   }
   public onSubmit(values:User):void {
@@ -68,6 +86,7 @@ export class Register implements OnInit  {
         (data) => {
           if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
             this._message.create("success","注册成功");
+            this.router.navigate(['/login']);
           }
         },
         error => {
