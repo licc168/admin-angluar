@@ -52,7 +52,7 @@ export class Register implements OnInit  {
       email            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$"),this.userNameAsyncValidator]]
+      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$")]]
     });
   }
   userNameAsyncValidator = (control: FormControl): any => {

@@ -13,10 +13,9 @@
           </label>
         </div>
         <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('userName')">
-          <nz-input [nzSize]="'large'" formControlName="userName" [nzId]="'userName'" [nzPlaceHolder]="'async validate try to write JasonWood'" ></nz-input>
+          <nz-input [nzSize]="'large'" formControlName="userName" [nzId]="'userName'" [nzPlaceHolder]="''" ></nz-input>
           <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('required')">请输入用户名!</div>
           <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('pattern')">必须是数字和字母组合长度在6-10</div>
-          <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').pending">Validating...</div>
 
         </div>
       </div>
