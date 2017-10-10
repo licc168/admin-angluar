@@ -14,7 +14,8 @@ export const CONSTANTS = {
     // 菜单模块地址
     user: {
       page: "/api/user/page", // 查询用户信息
-      delete: "/api/user/delete"// 根据Id删除用户信息
+      delete: "/api/user/delete",// 根据Id删除用户信息
+      isExistsUserName:"/api/user/isExistsUserName" // 验证用户名是否存在
     },
     menu: {
       list: "/api/menu/list",// 首页加载菜单列表

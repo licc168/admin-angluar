@@ -50,7 +50,6 @@ export class UserComponent  implements OnInit {
   }
 
   deleteById(id: number) {
-    debugger
     this.userService.deleteById(id).subscribe(
       res => {
         if (res.status === CONSTANTS.HTTPStatus.NO_CONTENT) {

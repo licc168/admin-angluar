@@ -19,11 +19,7 @@ export class Register implements OnInit  {
 
   validateForm: FormGroup;
 
-  _submitForm() {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[ i ].markAsDirty();
-    }
-  }
+
 
   constructor(private router: Router,private fb: FormBuilder,private userService:UserService,private _message: NzMessageService) {
   }
@@ -52,30 +48,48 @@ export class Register implements OnInit  {
       email            : [ null, [ Validators.email ] ],
       password         : [ null, [ Validators.required ] ],
       checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$"),this.userNameAsyncValidator]]
+      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$")],[this.userNameAsyncValidator]]
     });
   }
+
+
+
   userNameAsyncValidator = (control: FormControl): any => {
+    let $this = this;
     return Observable.create(function (observer) {
       setTimeout(() => {
+        $this.userService.isExistsUserName(control.value).subscribe(
+          (data) => {
+            if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
 
-        if (control.value === 'admin111') {
-          observer.next({ error: true, duplicated: true });
-        } else {
+              if (data.json() === 0) {
+                observer.next(null);
 
+              } else {
+                observer.next({error: true, duplicated: true});
 
-          observer.next(null);
-        }
-        observer.complete();
+              }
+              observer.complete();
+
+            }
+          },
+          error => {
+          });
       }, 10);
     });
   };
+
+
 
   getFormControl(name) {
 
     return this.validateForm.controls[ name ];
   }
-  public onSubmit(values:User):void {
+  public onSubmit($event,values:User):void {
+    $event.preventDefault();
+    for (const key in this.validateForm.controls) {
+      this.validateForm.controls[ key ].markAsDirty();
+    }
 
     let user = new User();
     user.password = values.password;

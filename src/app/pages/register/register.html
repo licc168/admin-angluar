@@ -3,7 +3,7 @@
     <h1>NG2 后台管理系统</h1>
     <a routerLink="/login" class="auth-link">登录</a>
 
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="onSubmit(validateForm.value)">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="onSubmit($event,validateForm.value)">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
           <label for="userName" nz-form-item-required>
@@ -12,11 +12,11 @@
             </span>
           </label>
         </div>
-        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('userName')">
-          <nz-input [nzSize]="'large'" formControlName="userName" [nzId]="'userName'" [nzPlaceHolder]="'async validate try to write JasonWood'" ></nz-input>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('userName')" nzHasFeedback>
+          <nz-input [nzSize]="'large'" formControlName="userName" [nzId]="'userName'" [nzPlaceHolder]="'请输入用户名'" ></nz-input>
           <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('required')">请输入用户名!</div>
           <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('pattern')">必须是数字和字母组合长度在6-10</div>
-          <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').pending">Validating...</div>
+          <div nz-form-explain *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('error')">用户名已存在</div>
 
         </div>
       </div>

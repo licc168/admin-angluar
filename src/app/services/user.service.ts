@@ -28,4 +28,10 @@ export class UserService {
   deleteById(id: number) {
      return this.http.delete( CONSTANTS.API_URL.user.delete + "/" + id ).map((response: Response) => response);
   }
+
+  isExistsUserName(userName: String) {
+    return this.http.get( CONSTANTS.API_URL.user.isExistsUserName+"?userName="+userName).map((response: Response) => response);
+  }
+
+
 }
