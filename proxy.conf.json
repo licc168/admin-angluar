@@ -1,11 +1,11 @@
 
 {
   "/api/*": {
-    "target": "http://localhost:8070/",
+    "target": "http://192.168.23.182:8070",
     "secure": false
   },
   "/login": {
-    "target":"http://localhost:8070/",
+    "target":"http://192.168.23.182:8070",
     "secure": false
   }
 }

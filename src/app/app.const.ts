@@ -29,6 +29,7 @@ export const CONSTANTS = {
   },
   HTTPStatus: {
     SUCCESS: 200, // 成功
+    FAIL: 0, // 成功
     NO_CONTENT: 204, // 删除成功
     UNAUTHORIZED: 401,// 没有权限
     INTERNAL_SERVER_ERROR: 500,// 系统异常

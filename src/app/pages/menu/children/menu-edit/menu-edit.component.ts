@@ -45,6 +45,7 @@ export class MenuEditComponent implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
+
       console.dir(params);
       this._id = params['id'] || '';
     });
@@ -64,11 +65,10 @@ export class MenuEditComponent implements OnInit {
 
   openEdit(id:number) {
 
-    this.menuService.getById(id).subscribe(
+    this.menuService.getById(id).then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.SUCCESS) {
-
-          const  data = JSON.parse(res.text());
+        if (res.success) {
+          const  data = res.data;
           this.title = data.title;
           this.id = data.id;
           this.icon =data.icon;
@@ -87,16 +87,12 @@ export class MenuEditComponent implements OnInit {
   }
   parentList() {
 
-    this.menuService.parentList().subscribe(
+    this.menuService.parentList().then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.SUCCESS) {
-          let data = JSON.parse(res.text());
+        if (res.success) {
+          let data = res.data;
           this.menus = data;
         }
-      },
-      error => {
-
-
       });
   }
 
@@ -106,15 +102,11 @@ export class MenuEditComponent implements OnInit {
 
   public onSubmit(menu: Menu): void {
 
-    this.menuService.saveMenu(menu).subscribe(
+    this.menuService.saveMenu(menu).then(
       (data) => {
-        if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
-          this.createMessage("success", "操作成功");
+        if (data.success) {
+          this.createMessage("success", data.msg);
         }
-      },
-      error => {
-        this.createMessage("error", "操作失败");
-
       });
   };
 

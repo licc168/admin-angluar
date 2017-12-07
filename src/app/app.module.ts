@@ -18,12 +18,14 @@ import { PagesModule } from './pages/pages.module';
 import {AuthenticationService} from "./services/authentication.service";
 import { CookieService, BaseCookieOptions, CookieOptions } from "angular2-cookie/core";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {HttpInterceptorService} from "./services/http-interceptor.service";
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
   CookieService,
   AuthenticationService,
+  HttpInterceptorService,
   { provide: CookieOptions, useValue: {} },
   GlobalState
 ];

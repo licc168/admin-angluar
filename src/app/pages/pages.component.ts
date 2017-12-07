@@ -21,24 +21,16 @@ import {MenuService} from "../services/menu.service";
     `
 })
 export class Pages {
-
   public pagesMenu:any = [];
   constructor(private _menuService: BaMenuService,private menuService:MenuService ) {
   }
-
   ngOnInit() {
-    this.menuService.list()
-      .subscribe(
-        data => {
-          if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
-            let menus = data.text();
-            menus = menus.replace(/\'/g,"\"");
-            this.pagesMenu = JSON.parse(menus);
-            this._menuService.updateMenuByRoutes(<Routes> this.pagesMenu );
-          }
-        },
-        error => {
+    this.menuService.list().then(result => {
+     if(result.success) {
+       this.pagesMenu = JSON.parse(result.data.replace(/\'/g,"\""));
+       this._menuService.updateMenuByRoutes(<Routes> this.pagesMenu);
+     }
+      });
 
-        });
   }
 }

@@ -39,10 +39,11 @@ export class MenuComponent  implements OnInit {
     menu.size = this._pageSize;
     this._loading = true;
 
-    this.menuService.page(menu).subscribe(
+    this.menuService.page(menu).then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.SUCCESS) {
-          const data = JSON.parse(res.text());
+        if (res.success) {
+
+          const data = res.data;
           this._total = data.totalElements;
           this._loading = false;
           this._dataSet = data.content;
@@ -56,16 +57,12 @@ export class MenuComponent  implements OnInit {
 
   deleteById(id: number) {
 
-    this.menuService.deleteById(id).subscribe(
+    this.menuService.deleteById(id).then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.SUCCESS) {
+        if (res.success) {
           this.createMessage("success","删除成功");
           this.getPageData();
         }
-      },
-      error => {
-
-
       });
   }
   showModalForComponentAdd() {
