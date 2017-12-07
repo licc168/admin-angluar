@@ -15,27 +15,26 @@ import {Observable} from "rxjs";
   selector: 'register',
   templateUrl: './register.html',
 })
-export class Register implements OnInit  {
+export class Register implements OnInit {
 
   validateForm: FormGroup;
 
 
-
-  constructor(private router: Router,private fb: FormBuilder,private userService:UserService,private _message: NzMessageService) {
+  constructor(private router: Router, private fb: FormBuilder, private userService: UserService, private _message: NzMessageService) {
   }
 
   updateConfirmValidator() {
 
     setTimeout(_ => {
-      this.validateForm.controls[ 'checkPassword' ].updateValueAndValidity();
+      this.validateForm.controls['checkPassword'].updateValueAndValidity();
     });
   }
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
-      return { required: true };
-    } else if (control.value !== this.validateForm.controls[ 'password' ].value) {
-      return { confirm: true, error: true };
+      return {required: true};
+    } else if (control.value !== this.validateForm.controls['password'].value) {
+      return {confirm: true, error: true};
     }
   };
 
@@ -45,50 +44,43 @@ export class Register implements OnInit  {
 
   ngOnInit() {
     this.validateForm = this.fb.group({
-      email            : [ null, [ Validators.email ] ],
-      password         : [ null, [ Validators.required ] ],
-      checkPassword    : [ null, [ Validators.required, this.confirmationValidator ] ],
-      userName         : [ null, [ Validators.required,Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$")],[this.userNameAsyncValidator]]
+      email: [null, [Validators.email]],
+      password: [null, [Validators.required]],
+      checkPassword: [null, [Validators.required, this.confirmationValidator]],
+      userName: [null, [Validators.required, Validators.pattern("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$")], [this.userNameAsyncValidator]]
     });
   }
-
 
 
   userNameAsyncValidator = (control: FormControl): any => {
     let $this = this;
     return Observable.create(function (observer) {
       setTimeout(() => {
-        $this.userService.isExistsUserName(control.value).subscribe(
-          (data) => {
-            if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
+        $this.userService.isExistsUserName(control.value).then(
+          (res) => {
+            if (res.success) {
+              observer.next({error: true, duplicated: true});
 
-              if (data.json() === 0) {
-                observer.next(null);
-
-              } else {
-                observer.next({error: true, duplicated: true});
-
-              }
-              observer.complete();
+            } else {
+              observer.next(null);
 
             }
-          },
-          error => {
+            observer.complete();
           });
       }, 10);
     });
   };
 
 
-
   getFormControl(name) {
 
-    return this.validateForm.controls[ name ];
+    return this.validateForm.controls[name];
   }
-  public onSubmit($event,values:User):void {
+
+  public onSubmit($event, values: User): void {
     $event.preventDefault();
     for (const key in this.validateForm.controls) {
-      this.validateForm.controls[ key ].markAsDirty();
+      this.validateForm.controls[key].markAsDirty();
     }
 
     let user = new User();
@@ -96,16 +88,13 @@ export class Register implements OnInit  {
     user.userName = values.userName;
     user.email = values.email;
     if (this.validateForm.valid) {
-      this.userService.register(user).subscribe(
-        (data) => {
-          if (data.status === CONSTANTS.HTTPStatus.SUCCESS) {
-            this._message.create("success","注册成功");
+      this.userService.register(user).then(
+        (res) => {
+
+          if (res.success) {
+            this._message.create("success", "注册成功");
             this.router.navigate(['/login']);
           }
-        },
-        error => {
-          this._message.create("error","系统异常");
-
         });
     }
   }

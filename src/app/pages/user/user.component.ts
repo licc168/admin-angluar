@@ -16,7 +16,6 @@ export class UserComponent  implements OnInit {
   _total = 1;
   _dataSet = [];
   _loading = true;
-
   constructor(private userService: UserService,private _message: NzMessageService,) {
 
   }
@@ -34,34 +33,24 @@ export class UserComponent  implements OnInit {
     user.page = this._current - 1;
     user.size = this._pageSize;
     this._loading = true;
-    this.userService.page(user).subscribe(
+    this.userService.page(user).then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.SUCCESS) {
-          const data = JSON.parse(res.text());
+        if (res.success) {
+          const data = res.data;
           this._total = data.totalElements;
           this._loading = false;
           this._dataSet = data.content;
         }
-      },
-      error => {
-
-
       });
   }
 
   deleteById(id: number) {
-    this.userService.deleteById(id).subscribe(
+    this.userService.deleteById(id).then(
       res => {
-        if (res.status === CONSTANTS.HTTPStatus.NO_CONTENT) {
-
+        if (res.success) {
           this._message.create("success","删除成功");
           this.getPageData();
         }
-      },
-      error => {
-        this._message.create("error","删除失败");
-
-
       });
   }
 
